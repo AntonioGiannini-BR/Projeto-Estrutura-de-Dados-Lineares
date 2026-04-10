@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+
+#include "stack.c"
 #include "stack.h"
+#include "queue.c"
 #include "queue.h"
+#include "dlist.c"
 #include "dlist.h"
 
 /* 
