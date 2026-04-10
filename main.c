@@ -8,10 +8,19 @@
 #include "dlist.c"
 #include "dlist.h"
 
+void clear_screen() {
+    system("cls");
+}
+
+void wait_enter() {
+    printf("\nPressione ENTER para continuar...");
+    getchar();
+}
+
 /* 
  * Lê uma linha inteira do teclado e remove o '\n' final,
  * se ele existir.
- */
+ */ 
 static void read_line(char *buffer, int size) {
     if (fgets(buffer, size, stdin) != NULL) {
         buffer[strcspn(buffer, "\n")] = '\0';
@@ -24,6 +33,8 @@ static void dictionary_menu(DList *dict) {
     char word[TEXT_SIZE];
 
     do {
+        clear_screen();
+
         printf("\n===== DICIONARIO =====\n");
         printf("1. Inserir palavra\n");
         printf("2. Remover palavra\n");
@@ -34,6 +45,8 @@ static void dictionary_menu(DList *dict) {
         printf("Escolha: ");
         scanf("%d", &option);
         getchar(); /* Consome o enter deixado pelo scanf. */
+
+        clear_screen();
 
         switch (option) {
             case 1:
@@ -80,6 +93,11 @@ static void dictionary_menu(DList *dict) {
             default:
                 printf("Opcao invalida.\n");
         }
+
+        if (option != 0) {
+            wait_enter();
+        }
+
     } while (option != 0);
 }
 
@@ -92,7 +110,6 @@ int main(void) {
 
     /* Fila circular usada como buffer de salvamento. */
     Queue save_buffer;
-
     char text[TEXT_SIZE];
     int option;
 
@@ -103,6 +120,8 @@ int main(void) {
     }
 
     do {
+        clear_screen(); //Limpa os MENUS anteriores em tempo de execução.
+
         printf("\n===== TEXTMANAGER =====\n");
         printf("1. Inserir frase (Push na Pilha)\n");
         printf("2. Desfazer ultima frase (Pop na Pilha)\n");
@@ -115,6 +134,8 @@ int main(void) {
         printf("Escolha: ");
         scanf("%d", &option);
         getchar(); /* Remove o enter do buffer. */
+
+        printf("\n");
 
         switch (option) {
             case 1:
@@ -139,9 +160,9 @@ int main(void) {
 
             case 3:
                 /* 
-                 * Remove do editor e envia para a fila de salvamento.
-                 * Se o enqueue falhar, devolve a frase para a pilha.
-                 */
+                * Remove do editor e envia para a fila de salvamento.
+                * Se o enqueue falhar, devolve a frase para a pilha.
+                */
                 if (stack_pop(&editor, text)) {
                     if (queue_enqueue(&save_buffer, text)) {
                         printf("Frase enviada para o buffer de salvamento.\n");
@@ -149,10 +170,10 @@ int main(void) {
                         printf("Erro ao enviar para a fila.\n");
                         stack_push(&editor, text);
                     }
-                } else {
-                    printf("Editor vazio. Nada para salvar.\n");
-                }
-                break;
+            } else {
+                printf("Editor vazio. Nada para salvar.\n");
+            }
+            break;
 
             case 4:
                 /* Processa o salvamento removendo o primeiro da fila. */
@@ -184,6 +205,11 @@ int main(void) {
             default:
                 printf("Opcao invalida.\n");
         }
+
+        if (option != 0) {
+            wait_enter();
+        }
+
     } while (option != 0);
 
     /* Libera toda a memória usada pelas três estruturas. */
@@ -191,6 +217,8 @@ int main(void) {
     dlist_clear(&dictionary);
     queue_destroy(&save_buffer);
 
+    clear_screen(); // Limpa terminal e finaliza código.
     printf("Memoria liberada. Programa encerrado.\n");
+
     return 0;
 }
