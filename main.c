@@ -46,10 +46,9 @@ static void dictionary_menu(DList *dict) {
         scanf("%d", &option);
         getchar(); /* Consome o enter deixado pelo scanf. */
 
-        clear_screen();
-
         switch (option) {
             case 1:
+            printf("\n");
                 printf("Digite a palavra: ");
                 read_line(word, TEXT_SIZE);
                 if (dlist_insert_sorted(dict, word)) {
@@ -57,6 +56,9 @@ static void dictionary_menu(DList *dict) {
                 } else {
                     printf("Erro ao inserir palavra.\n");
                 }
+
+                wait_enter();
+                clear_screen();
                 break;
 
             case 2:
@@ -67,6 +69,9 @@ static void dictionary_menu(DList *dict) {
                 } else {
                     printf("Palavra nao encontrada.\n");
                 }
+
+                wait_enter();
+                clear_screen();
                 break;
 
             case 3:
@@ -77,25 +82,32 @@ static void dictionary_menu(DList *dict) {
                 } else {
                     printf("A palavra nao existe no dicionario.\n");
                 }
+
+                wait_enter();
+                clear_screen();
                 break;
 
             case 4:
                 dlist_print_forward(*dict);
+
+                wait_enter();
+                clear_screen();
                 break;
 
             case 5:
                 dlist_print_backward(*dict);
+
+                wait_enter();
+                clear_screen();
                 break;
 
             case 0:
+                clear_screen();
+                printf("Alterações concluídas.");
                 break;
 
             default:
                 printf("Opcao invalida.\n");
-        }
-
-        if (option != 0) {
-            wait_enter();
         }
 
     } while (option != 0);
